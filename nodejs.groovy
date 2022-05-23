@@ -34,6 +34,7 @@ pipeline{
    sudo apt-get install -y nodejs
    node -v
    npm install
+   killall node
    npm run start:dev
    '''
        } 
