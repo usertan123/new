@@ -8,13 +8,13 @@ pipeline{
  git branch: 'main', credentialsId: 'gitnew', url: 'git@github.com:usertan123/the-example-app.nodejs.git'
  }
  }
-//  stage("Maven-Build"){
-//  steps{
-//  sh 'sudo apt-get update -y'
-//  sh 'sudo apt-get install maven curl unzip -y'
-//  sh 'mvn clean package'
-//  }
-//  }
+ stage("Maven-Build"){
+ steps{
+ sh 'sudo apt-get update -y'
+ sh 'sudo apt-get install maven curl unzip -y'
+ sh 'mvn clean package'
+ }
+ }
 //   stage("push-artifact"){
 //   steps{
 
