@@ -15,28 +15,29 @@ pipeline{
  sh 'mvn clean package'
  }
  }
-//  stage("push-artifact"){
-//  steps{
-
-//  sh 'sudo mv /var/lib/jenkins/workspace/student.app/target/studentapp-2.2-SNAPSHOT.war /home/ubuntu/student-${BUILD_ID}.war'
-//  sh 'aws s3 cp /home/ubuntu/student-${BUILD_ID}.war s3://new-artifacts-123'
-//  }
-//  }
-//   stage("Dev-Deployment"){
+//   stage("push-artifact"){
 //   steps{
-//      withCredentials([sshUserPrivateKey(credentialsId: 'tomcat', keyFileVariable: 'tomcat')]) {
-//          sh'''
-//   ssh -i ${tomcat}  -o StrictHostKeyChecking=no ubuntu@3.7.68.98<<EOF
-//     aws s3 cp s3://new-artifacts-123/student-${BUILD_ID}.war .
-//                 curl -O https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.78/bin/apache-tomcat-8.5.78.tar.gz
-//                 sudo tar -xvf apache-tomcat-8.5.78.tar.gz -C /opt/
-//                 sudo sh /opt/apache-tomcat-8.5.78/bin/shutdown.sh
-//                 sudo cp -rv student-${BUILD_ID}.war studentapp.war
-//                 sudo cp -rv studentapp.war /opt/apache-tomcat-8.5.78/webapps/
-//                 sudo sh /opt/apache-tomcat-8.5.78/bin/startup.sh
-//                 '''
-//       } 
+
+//   sh 'sudo mv /var/lib/jenkins/workspace/student.app/target/studentapp-2.2-SNAPSHOT.war /home/ubuntu/student-${BUILD_ID}.war'
+//   sh 'aws s3 cp /home/ubuntu/student-${BUILD_ID}.war s3://new-artifacts-123'
 //   }
 //   }
+   stage("Dev-Deployment"){
+   steps{
+      withCredentials([sshUserPrivateKey(credentialsId: 'nodejs', keyFileVariable: 'nodejs')]) {
+          sh'''
+   ssh -i ${nodejs} -o StrictHostKeyChecking=no ubuntu@3.6.92.33<<EOF
+   git clone https://github.com/contentful/the-example-app.nodejs.git
+   sudo apt-get install git -y
+   cd the-example-app.nodejs
+   curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+   sudo apt-get install -y nodejs
+   node -v
+   npm install
+   npm run start:dev
+   '''
+       } 
+   }
+   }
   }
  }
